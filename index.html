@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Vídeo em iframe com botão de som</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Botão moderno de som */
+    .btn-som {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-som:hover {
+      background: rgba(255, 255, 255, 0.8);
+      color: black;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <button id="btnSom" class="btn-som">🔇</button>
+  <iframe id="meuFrame" src="https://seu-dominio.com/Untitled-133.html"></iframe>
+
+  <script>
+    const btnSom = document.getElementById('btnSom');
+    const iframe = document.getElementById('meuFrame');
+
+    // Envia mensagem para o iframe pedindo toggle de mute
+    btnSom.addEventListener('click', () => {
+      iframe.contentWindow.postMessage({ action: 'toggle-mute' }, '*');
+    });
+
+    // Recebe do iframe o estado atual do mute
+    window.addEventListener('message', (event) => {
+      if(event.data && event.data.type === 'mute-state') {
+        btnSom.textContent = event.data.muted ? '🔇' : '🔊';
+      }
+    });
+  </script>
+
+</body>
+</html>
