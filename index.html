@@ -2,22 +2,26 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Vídeo em iframe com botão de som</title>
+  <title>Vídeo Plataforma Híbrida</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    iframe {
+    video {
       width: 100%;
-      height: 100%;
-      border: none;
+      max-width: 900px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
-    /* Botão moderno de som */
     .btn-som {
       position: fixed;
       top: 20px;
@@ -34,7 +38,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       transition: background 0.3s, transform 0.2s;
     }
 
@@ -47,31 +51,25 @@
 </head>
 <body>
 
+  <video id="meuVideo" autoplay muted loop playsinline>
+    <source src="https://raw.githubusercontent.com/akainossys/akainossys.github.io/main/NEW_D_-_PLATAFORMA_H%C3%8DBRIDA%20(2).mp4" type="video/mp4">
+    Seu navegador não suporta o elemento de vídeo.
+  </video>
+
   <button id="btnSom" class="btn-som">🔇</button>
-  <iframe id="meuFrame" src="https://akainossys.github.io/Untitled-133.html"></iframe>
 
   <script>
+    const video = document.getElementById('meuVideo');
     const btnSom = document.getElementById('btnSom');
-    const iframe = document.getElementById('meuFrame');
 
-    // Envia mensagem para o iframe pedindo toggle de mute
     btnSom.addEventListener('click', () => {
-      iframe.contentWindow.postMessage({ action: 'toggle-mute' }, '*');
-    });
-
-    // Recebe do iframe o estado atual do mute
-    window.addEventListener('message', (event) => {
-      if(event.data && event.data.type === 'mute-state') {
-        btnSom.textContent = event.data.muted ? '🔇' : '🔊';
+      video.muted = !video.muted;
+      if (!video.muted) {
+        video.play(); // para garantir que o áudio comece
       }
+      btnSom.textContent = video.muted ? '🔇' : '🔊';
     });
   </script>
-  <video id="meuvideo" autoplay muted loop controls style="width:100%; max-width:800px;">
-  <source src="https://github.com/akainossys/akainossys.github.io/blob/main/NEW_D_-_PLATAFORMA_H%C3%8DBRIDA%20(2).mp4" type="video/mp4">
-  
-</video>
 
 </body>
 </html>
-
-
